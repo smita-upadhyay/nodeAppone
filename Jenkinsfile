@@ -1,5 +1,10 @@
 pipeline {
   agent any
+  
+   tools {
+        packer 'packer 1.8.2'
+        }
+	
   stages {
     stage('Create Packer AMI') {
         steps {
