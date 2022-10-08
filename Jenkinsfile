@@ -12,7 +12,7 @@ steps {
             usernamePassword(credentialsId: 'abc', passwordVariable: 'AWS_SECRET', usernameVariable: 'AWS_KEY')
 	]) {
            sh '$PACKER_HOME/packer --version'
-	   sh 'packer build -var aws_access_key=${AWS_KEY} -var aws_secret_key=${AWS_SECRET} ./packer.json'
+	   sh '$PACKER_HOME/packer build -var aws_access_key=${AWS_KEY} -var aws_secret_key=${AWS_SECRET} ./packer.json'
         }
 
        }
