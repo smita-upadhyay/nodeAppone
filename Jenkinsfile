@@ -1,9 +1,8 @@
 pipeline {
   agent any
-  
-   tools {
-        packer 'packer 1.8.2'
-        }
+  environment {
+      PACKER_HOME = tool name: 'packer', type: 'biz.neustar.jenkins.plugins.packer.PackerInstallation'
+    }
 	
   stages {
     stage('Create Packer AMI') {
