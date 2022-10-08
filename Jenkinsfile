@@ -5,6 +5,16 @@ pipeline {
     }
 	
   stages {
+	
+stage('Example') {
+steps {
+sh '$PACKER_HOME/packer --version'
+sh '$PACKER_HOME/packer validate packer.json'
+sh '$PACKER_HOME/packer build packer.json'
+}
+}
+
+
     stage('Create Packer AMI') {
         steps {
           withCredentials([
