@@ -1,6 +1,13 @@
 pipeline {
   agent any
   stages {
+    stage('clean') {
+            steps {
+                // Clean before build
+                cleanWs()
+                
+            }
+        }
     stage('Install packer') {
         steps {
           script {
