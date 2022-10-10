@@ -5,6 +5,7 @@ Parameters:
   EnvironmentName:
     Description: An environment name that is prefixed to resource names
     Type: String
+    Default: nodeapp
 
   DatabaseName:
     AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
@@ -108,6 +109,7 @@ Parameters:
     Description: The EC2 Key Pair to allow SSH access to the instances
     Type: 'AWS::EC2::KeyPair::KeyName'
     ConstraintDescription: must be the name of an existing EC2 KeyPair.
+    Default: mykey
 
   SSHLocation:
     Description: The IP address range that can be used to SSH to the EC2 instances
