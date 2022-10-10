@@ -12,7 +12,7 @@ pipeline {
                 
             
 		
-		 sh  "aws cloudformation create-stack --stack-name infra --template-body file://cftwo.yml --region 'us-east-1'"
+		 sh  "aws cloudformation create-stack --stack-name infra --template-body file://cftwo.yml --EnvironmentName 'abc' --KeyName 'mykey' --region 'us-east-1'"
           
               }
              }
