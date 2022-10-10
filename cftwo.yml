@@ -198,7 +198,7 @@ Parameters:
 Mappings:
   RegionMap:
     us-east-1:
-     "AMI": "ami-05fa00d4c63e32376"
+     "AMI": "three-tier-nodeApp"
 
 Resources:
   VPC:
