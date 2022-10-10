@@ -8,8 +8,10 @@ pipeline {
 	
 	  stage('Submit Stack') {
             steps {
-	
-		 sh "aws --version"
+		    "withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'my-creden', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                
+            
+		
 		 sh  "aws cloudformation create-stack --stack-name infra --template-body file://cftwo.yml --region 'us-east-1'"
           
               }
@@ -18,4 +20,5 @@ pipeline {
 
 
   }
+}
 
