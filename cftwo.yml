@@ -374,12 +374,7 @@ Resources:
       KeyName: !Ref KeyName
       SecurityGroupIds:
         - !Ref WebServerSecurityGroup
-      UserData:
-        Fn::Base64: !Sub |
-            #!/bin/bash
-            yum install httpd -y
-            service httpd start
-            echo "<html><body><h1>Hello from Region ${AWS::Region}<h1></body></html>" > /var/www/html/index.html
+     
 
   WebServerTargetPolicy:
    Type: AWS::AutoScaling::ScalingPolicy
