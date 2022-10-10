@@ -1,27 +1,19 @@
 pipeline {
   agent any
-  environment {
-      PACKER_HOME = tool name: 'packer', type: 'biz.neustar.jenkins.plugins.packer.PackerInstallation'
-    }
+ 
 	
   stages {
 	
-stage('Example') {
-steps {
-	withCredentials([
-            usernamePassword(credentialsId: 'abc', passwordVariable: 'AWS_SECRET', usernameVariable: 'AWS_KEY')
-	]) {
-           sh '$PACKER_HOME/packer --version'
-	   sh '$PACKER_HOME/packer build -var aws_access_key=${AWS_KEY} -var aws_secret_key=${AWS_SECRET} ./packer.json'
-        }
 
-       }
-     }
 	  stage('Submit Stack') {
             steps {
+		    withCredentials([
+            usernamePassword(credentialsId: 'sec', passwordVariable: 'AWS_SECRET', usernameVariable: 'AWS_KEY')
+	]) {
             sh "aws cloudformation create-stack --stack-name infra --template-body file://cf.yml --region 'us-east-1'"
               }
              }
+	  }
 
 
   }
