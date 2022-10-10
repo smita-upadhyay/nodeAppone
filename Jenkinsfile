@@ -10,7 +10,7 @@ pipeline {
 		    withCredentials([
             usernamePassword(credentialsId: 'sec', passwordVariable: 'AWS_SECRET', usernameVariable: 'AWS_KEY')
 	]) {
-            sh "aws cloudformation create-stack --stack-name infra --template-body file://cf.yml --region 'us-east-1'"
+            sh "aws cloudformation create-stack --stack-name infra --template-body file://newfinal - Copy.yml --region 'us-east-1'"
               }
              }
 	  }
