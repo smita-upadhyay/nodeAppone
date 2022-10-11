@@ -10,7 +10,7 @@ var mysql = require('mysql');
  
 // create a connection variable with the required details
 var con = mysql.createConnection({
-  host: "127.0.0.1", // ip address of server running mysql
+  host: "mysql57db.cmz9alyf7ucn.us-east-1.rds.amazonaws.com", // ip address of server running mysql
   user: "dbadmin", // user name to your mysql database
   password: "database1407", // corresponding password
   port: "3306",
