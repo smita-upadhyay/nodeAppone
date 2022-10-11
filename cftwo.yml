@@ -194,11 +194,14 @@ Parameters:
     Default: false
     Description: Creates a Multi-AZ MySQL Amazon RDS database instance
     Type: String  
+    
+  ImageId:
+    Description: Image ID for base EC2 instance.
+    Type: AWS::EC2::Image::Id
+    # amzn-ami-hvm-2016.09.1.20161221-x86_64-gp2
+    Default: three-tier-nodeApp
 
-Mappings:
-  RegionMap:
-    us-east-1:
-     "AMI": "three-tier-nodeApp"
+
 
 Resources:
   VPC:
