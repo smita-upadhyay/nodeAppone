@@ -196,9 +196,9 @@ Parameters:
     Type: String  
     
   Mappings:
-  RegionMap:
-    us-east-1:
-     "AMI": "ami-060e07b44074b05d1"
+    RegionMap:
+      us-east-1:
+       "AMI": "ami-060e07b44074b05d1"
 
 
 
