@@ -372,7 +372,7 @@ Resources:
    Type: AWS::EC2::LaunchTemplate
    Properties:
      LaunchTemplateData:
-      ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", AMI]
+      ImageId: !Ref ImageId
       InstanceType: !Ref InstanceType
       KeyName: !Ref KeyName
       SecurityGroupIds:
