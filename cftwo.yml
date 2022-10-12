@@ -132,7 +132,7 @@ Parameters:
   DatabaseName:
     AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
     ConstraintDescription: Must begin with a letter and contain only alphanumeric characters
-    Default: applicationdb
+    Default: applicationdbnode
     Description: MySQL database name
     MaxLength: 64
     MinLength: 1
@@ -141,7 +141,7 @@ Parameters:
   DatabaseUser:
     AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
     ConstraintDescription: Must begin with a letter and contain only alphanumeric characters
-    Default: dbadmin
+    Default: dbadminnode
     Description: Username for MySQL database access
     MaxLength: 16
     MinLength: 1
@@ -151,7 +151,7 @@ Parameters:
   DatabasePassword:
     AllowedPattern: '[a-zA-Z0-9]*'
     ConstraintDescription: Must contain only alphanumeric characters
-    Default: database1407
+    Default: database1407node
     Description: Password for MySQL database access
     MaxLength: 41
     MinLength: 8
