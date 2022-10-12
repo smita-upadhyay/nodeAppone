@@ -198,7 +198,7 @@ Parameters:
 Mappings:
   RegionMap:
     us-east-1:
-     "AMI": "ami-060e07b44074b05d1"  
+     "AMI": "ami-0197182afd46aa925"  
 
 
 Resources:
