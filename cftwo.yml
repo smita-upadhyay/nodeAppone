@@ -309,8 +309,8 @@ Resources:
           ToPort: '3000'
           CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
-          FromPort: '3001'
-          ToPort: '3001'
+          FromPort: '3002'
+          ToPort: '3002'
           CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
           FromPort: '3306'
@@ -339,8 +339,8 @@ Resources:
           ToPort: 3000
           CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
-          FromPort: '3001'
-          ToPort: '3001'
+          FromPort: '3002'
+          ToPort: '3002'
           CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
           FromPort: '3306'
