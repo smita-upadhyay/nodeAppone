@@ -8,7 +8,7 @@ pipeline {
     }
 	
       stages {
-	stage('AMI creation') {  
+	   /*stage('AMI creation') {  
 	  steps {
 	     withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'my-creden', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
              sh '$PACKER_HOME/packer --version'
@@ -16,14 +16,14 @@ pipeline {
 	     /*sh 'aws ssm put-parameter --name "web-server" --value "three-node-App" --type "String" --datatype "aws:ec2:image"'*/
               }
            }
-        }
-       /* stage('cf Stack') {
+        }*/
+     stage('cf Stack') {
           steps {
        withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'my-creden', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                  sh  "aws cloudformation create-stack --stack-name infra --template-body file://cftwo.yml  --region 'us-east-1'"
                }
              }
-	  }*/
+	  }
        }
     }
 
