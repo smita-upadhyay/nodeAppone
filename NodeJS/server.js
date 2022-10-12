@@ -47,8 +47,8 @@ app.post('/',(req,res)=>{
 
 })
 
-app.listen(3001,()=>{
-  console.log("Port 3001");
+app.listen(3002,()=>{
+  console.log("Port 3002");
 })
 
 
