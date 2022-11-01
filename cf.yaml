@@ -199,6 +199,11 @@ Parameters:
     Default: false
     Description: Creates a Multi-AZ MySQL Amazon RDS database instance
     Type: String  
+    
+Mappings:
+  RegionMap:
+    us-east-1:
+     "AMI": "ami-0ab2950e92190cbb0" 
   
 
 
