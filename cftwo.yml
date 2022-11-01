@@ -302,7 +302,7 @@ Resources:
   ELBSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
-      GroupDescription: Enable HTTP from 0.0.0.0/0
+      GroupDescription: Enable HTTP and HTTPS from 0.0.0.0/0
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: '3000'
@@ -321,7 +321,7 @@ Resources:
   WebServerSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
-      GroupDescription: Enable SSH access and HTTP from 0.0.0.0/0
+      GroupDescription: Enable SSH access and HTTP and HTTPS from 0.0.0.0/0
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: '22'
