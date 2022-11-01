@@ -31,6 +31,4 @@ sudo pm2 start server.js
 sudo pm2 startup
 sudo pm2 save
 
-#ip setting
-sudo chmod 777 /etc/environment
-echo HOST_IP=$(curl http://checkip.amazonaws.com) >> /etc/environment
+
