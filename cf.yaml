@@ -1,10 +1,81 @@
-Description:  This template deploys an AutoScaling Group with Application Load Balancer with a VPC, with public and private subnets in 3 AZs. It deploys an internet gateway, with a default
-  route on the public subnets. It deploys 3 NAT gateways (one in each AZ),
-  and default routes for them in the private subnets. It deploys an AutoScaling Group with Application Load Balancer.
+Description: vpc,alb,asg,rds
+
 
 Parameters:
   EnvironmentName:
     Description: An environment name that is prefixed to resource names
+    Type: String
+    Default: nodeapp
+    
+  ParameterName: 
+    Description: path of my ami
+    Type: String
+    Default: ${parameter-name}  
+
+  DatabaseName:
+    AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
+    ConstraintDescription: Must begin with a letter and contain only alphanumeric characters
+    Default: applicationdb
+    Description: MySQL database name
+    MaxLength: 64
+    MinLength: 1
+    Type: String
+
+  DatabaseUser:
+    AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
+    ConstraintDescription: Must begin with a letter and contain only alphanumeric characters
+    Default: dbadmin
+    Description: Username for MySQL database access
+    MaxLength: 16
+    MinLength: 1
+    NoEcho: true
+    Type: String
+
+  DatabasePassword:
+    AllowedPattern: '[a-zA-Z0-9]*'
+    ConstraintDescription: Must contain only alphanumeric characters
+    Default: newone123
+    Description: Password for MySQL database access
+    MaxLength: 41
+    MinLength: 8
+    NoEcho: true
+    Type: String
+
+  DatabaseBackupRetentionPeriod:
+    ConstraintDescription: Database backup retention period must be between 0 and 35 days
+    Default: 0
+    Description: The number of days for which automatic DB snapshots are retained
+    MaxValue: 35
+    MinValue: 0
+    Type: Number
+
+  DatabaseAllocatedStorage:
+    ConstraintDescription: Must be between 5 and 1024Gb
+    Default: 20
+    Description: The size of the database (Gb)
+    MaxValue: 65536
+    MinValue: 5
+    Type: Number
+
+  DatabaseInstanceClass:
+    AllowedValues:
+      - db.t1.micro
+      - db.t2.micro
+      - db.m1.small
+      - db.m1.medium
+      - db.m1.large
+    ConstraintDescription: Must select a valid database instance type
+    Default: db.t2.micro
+    Description: The database instance type
+    Type: String
+
+  MultiAZDatabase:
+    AllowedValues:
+      - true
+      - false
+    ConstraintDescription: Must be either true or false
+    Default: false
+    Description: Creates a Multi-AZ MySQL Amazon RDS database instance
     Type: String
 
   VpcCIDR:
@@ -43,6 +114,7 @@ Parameters:
     Description: The EC2 Key Pair to allow SSH access to the instances
     Type: 'AWS::EC2::KeyPair::KeyName'
     ConstraintDescription: must be the name of an existing EC2 KeyPair.
+    Default: mykey
 
   SSHLocation:
     Description: The IP address range that can be used to SSH to the EC2 instances
@@ -53,10 +125,82 @@ Parameters:
     AllowedPattern: '(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})'
     ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
 
-Mappings:
-  RegionMap:
-    us-east-1:
-     "AMI": "ami-05fa00d4c63e32376"
+  DatabaseInstanceIdentifier:
+    AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
+    ConstraintDescription: Must begin with a letter and contain only alphanumeric characters
+    Default: mysql57db
+    Description: Instance identifier name
+    MaxLength: 60
+    MinLength: 1
+    Type: String
+
+  DatabaseName:
+    AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
+    ConstraintDescription: Must begin with a letter and contain only alphanumeric characters
+    Default: applicationdb
+    Description: MySQL database name
+    MaxLength: 64
+    MinLength: 1
+    Type: String
+
+  DatabaseUser:
+    AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
+    ConstraintDescription: Must begin with a letter and contain only alphanumeric characters
+    Default: dbadmin
+    Description: Username for MySQL database access
+    MaxLength: 16
+    MinLength: 1
+    NoEcho: true
+    Type: String
+
+  DatabasePassword:
+    AllowedPattern: '[a-zA-Z0-9]*'
+    ConstraintDescription: Must contain only alphanumeric characters
+    Default: newone123
+    Description: Password for MySQL database access
+    MaxLength: 41
+    MinLength: 8
+    NoEcho: true
+    Type: String
+
+  DatabaseBackupRetentionPeriod:
+    ConstraintDescription: Database backup retention period must be between 0 and 35 days
+    Default: 0
+    Description: The number of days for which automatic DB snapshots are retained
+    MaxValue: 35
+    MinValue: 0
+    Type: Number
+
+  DatabaseAllocatedStorage:
+    ConstraintDescription: Must be between 5 and 1024Gb
+    Default: 20
+    Description: The size of the database (Gb)
+    MaxValue: 65536
+    MinValue: 5
+    Type: Number
+
+  DatabaseInstanceClass:
+    AllowedValues:
+      - db.t1.micro
+      - db.t2.micro
+      - db.m1.small
+      - db.m1.medium
+      - db.m1.large
+    ConstraintDescription: Must select a valid database instance type
+    Default: db.t2.micro
+    Description: The database instance type
+    Type: String
+
+  MultiAZDatabase:
+    AllowedValues:
+      - true
+      - false
+    ConstraintDescription: Must be either true or false
+    Default: false
+    Description: Creates a Multi-AZ MySQL Amazon RDS database instance
+    Type: String  
+  
+
 
 Resources:
   VPC:
@@ -165,6 +309,14 @@ Resources:
           FromPort: '3000'
           ToPort: '3000'
           CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '3002'
+          ToPort: '3002'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '3306'
+          ToPort: '3306'
+          CidrIp: 0.0.0.0/0
       VpcId: !Ref VPC
 
   WebServerSecurityGroup:
@@ -186,6 +338,14 @@ Resources:
         - IpProtocol: tcp
           FromPort: 3000
           ToPort: 3000
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '3002'
+          ToPort: '3002'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '3306'
+          ToPort: '3306'
           CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
           FromPort: '80'
@@ -222,46 +382,19 @@ Resources:
        - Key: Name
          PropagateAtLaunch: false
          Value: ASG
+ 
 
   MyLaunchTemplate:
    Type: AWS::EC2::LaunchTemplate
    Properties:
      LaunchTemplateData:
-      ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", AMI]
+      ImageId: !Ref ParameterName
       InstanceType: !Ref InstanceType
       KeyName: !Ref KeyName
       SecurityGroupIds:
         - !Ref WebServerSecurityGroup
-      UserData:
-       Fn::Base64: !Sub |
-           #!/bin/bash -ex
-           # output user data logs into a separate file for debugging
-           exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
-           # download nvm
-           curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-           # source nvm
-           . /.nvm/nvm.sh
-           # install node
-           nvm install node
-           #export NVM dir
-           export NVM_DIR="/.nvm"	
-           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"	
-           [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" 
-           #upgrade yum
-           sudo yum upgrade
-           #install git
-           sudo yum install git -y
-           cd /home/ec2-user
-           # get source code from githubt
-           git clone https://github.com/felixyu9/auto-scaling-nodejs-app
-           #get in project dir
-           cd auto-scaling-nodejs-app
-           #give permission
-           sudo chmod -R 755 .
-           #install node module
-           npm install
-           # start the app
-           node app.js > app.out.log 2> app.err.log < /dev/null &
+     
+
   WebServerTargetPolicy:
    Type: AWS::AutoScaling::ScalingPolicy
    Properties:
@@ -291,6 +424,8 @@ Resources:
       LoadBalancerArn: !Ref ApplicationLoadBalancer
       Port: '3000'
       Protocol: HTTP
+      Port: '3002'
+      Protocol: HTTP
 
   ALBTargetGroup:
     Type: 'AWS::ElasticLoadBalancingV2::TargetGroup'
@@ -300,9 +435,43 @@ Resources:
       HealthyThresholdCount: 3
       Port: 3000
       Protocol: HTTP
+      Port: 3002
+      Protocol: HTTP
       UnhealthyThresholdCount: 5
       VpcId: !Ref VPC
 
+  DatabaseSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: Subnet group for RDS database
+      SubnetIds: 
+        - !Ref PublicSubnet1
+        - !Ref PublicSubnet2
+        - !Ref PublicSubnet3
+      Tags:
+        - Key: Name
+          Value: database subnets    
+
+  DatabaseInstance:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      AllocatedStorage: !Ref DatabaseAllocatedStorage
+      AvailabilityZone: !Select [ 0, !GetAZs  '' ]
+      BackupRetentionPeriod: !Ref DatabaseBackupRetentionPeriod
+      DBInstanceClass: !Ref DatabaseInstanceClass
+      DBInstanceIdentifier: !Ref DatabaseInstanceIdentifier
+      DBName: !Ref DatabaseName
+      DBSubnetGroupName: !Ref DatabaseSubnetGroup
+      Engine: MySQL
+      EngineVersion: 5.7.33
+      MasterUsername: !Ref DatabaseUser
+      MasterUserPassword: !Ref DatabasePassword
+      MultiAZ: !Ref MultiAZDatabase
+      Port: 3306
+      
+
+     
+      
 Outputs:
   VPC:
     Description: A reference to the created VPC
