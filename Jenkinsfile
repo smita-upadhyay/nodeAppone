@@ -17,13 +17,13 @@ pipeline {
               }
            }
         } 
-     stage('cf Stack') {
+    /* stage('cf Stack') {
           steps {
        withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'my-creden', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                  sh  "aws cloudformation create-stack --stack-name newinfras --template-body file://cf.yml  --region 'us-east-1'"
                }
              }
-	  }
+	  }*/
        }
     }
 
