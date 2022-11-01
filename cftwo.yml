@@ -399,6 +399,9 @@ Resources:
            sudo chmod 777 /etc/environment
            #install node module
            echo HOST_IP=$(curl http://checkip.amazonaws.com) >> /etc/environment
+           sudo chmod 777 /etc/environment
+           echo HOST_IP=$(curl http://checkip.amazonaws.com) >> /etc/hosts
+           
            
      
 
