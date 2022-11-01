@@ -7,10 +7,7 @@ Parameters:
     Type: String
     Default: nodeapp
     
-  ParameterName: 
-    Description: path of my ami
-    Type: String
-    Default: ${parameter-name}  
+
 
   DatabaseName:
     AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
@@ -203,7 +200,7 @@ Parameters:
 Mappings:
   RegionMap:
     us-east-1:
-     "AMI": "ami-0ab2950e92190cbb0" 
+     "AMI": "ami-08c4b450f6edb2fab" 
   
 
 
