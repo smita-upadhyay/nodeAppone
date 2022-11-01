@@ -24,7 +24,7 @@ console.log(this.state);
   render(){
   return (
     <div className="App">
-        <form method='post' action='http://${HOST_IP}:3002/'>
+        <form method='post' action='https://HOST_IP:3002/'>
             <div className='name'>
               <label htmlFor='name'>Enter Name:</label>
               <input type='text' name='name' onChange={this.handleChange}/>
